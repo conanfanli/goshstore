@@ -1,2 +1,0 @@
-# goshstore
-Django GosHStoreField

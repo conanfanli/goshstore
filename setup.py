@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 
+from codecs import open
+from os import path
 from setuptools import setup, find_packages
 
+here = path.abspath(path.dirname(__file__))
+
+# Get the long description from the README file
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='goshstore',
     version='0.1.0dev1',
     description='Django get-or-set hstore field',
+    long_description=long_description,
     url='https://github.com/conanfanli/goshstore',
     packages=find_packages(exclude=['doc', 'tests*']),
     install_requires=['django>=1.8,<1.8.9'],

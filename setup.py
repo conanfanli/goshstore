@@ -9,7 +9,7 @@ setup(
     description='Django get-or-set hstore field',
     url='https://github.com/conanfanli/goshstore',
     packages=find_packages(),
-    install_requires=['django>=1.8,<1.9'],
+    install_requires=['django>=1.8,<1.8.9'],
     classifiers=[
         'Programming Language :: Python :: 3.4'
     ]

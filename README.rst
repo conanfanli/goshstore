@@ -7,20 +7,17 @@ How to use
 ----------
 Assuming you have a django model defined:
 
-```
+.. code-block:: python
+    from django.db import models
+    from goshstore import GosHStoreField
 
-from django.db import models
-from goshstore import GosHStoreField
+    class MyModel(models.Model):
+        hstores = GosHStoreField(default={})
 
-class MyModel(models.Model):
-    hstores = GosHStoreField(default={})
+        @hstores.getter(key='foo', converter=Decimal)
+        def get_foo(self, reset=False, save=True):
+            return max(range(100))
 
-    @hstores.getter(key='foo', converter=Decimal)
-    def get_foo(self, reset=False, save=True):
-        return max(range(100))
-
-
-```
 
 Calling instance.get_foo() will return instance.hstores['foo'] if 'foo'
 is in instance.hstores. Otherwise, 100 will be stored into

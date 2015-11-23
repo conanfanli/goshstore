@@ -8,6 +8,7 @@ How to use
 Assuming you have a django model defined:
 
 .. code-block:: python
+
     from django.db import models
     from goshstore import GosHStoreField
 

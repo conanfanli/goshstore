@@ -16,7 +16,7 @@ Assuming you have a django model defined:
         hstores = GosHStoreField(default={})
 
         @hstores.getter(key='foo', converter=Decimal)
-        def get_foo(self, reset=False, save=True):
+        def get_foo(self, save=True, reset=False):
             return max(range(100))
 
     instance = MyModel()

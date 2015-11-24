@@ -1,3 +1,4 @@
+import inspect
 from functools import wraps
 
 from django.contrib.postgres.fields import HStoreField
@@ -47,6 +48,13 @@ class GosHStoreField(HStoreField):
         def wrapper1(method):
             if converter and not callable(converter):
                 raise AssertionError('{} is not callable'.format(converter))
+
+            method_args = inspect.getargspec(method).args
+            expected_args = ['self', 'save', 'reset']
+            if method_args != expected_args:
+                raise AssertionError('A hstore getter method must have the '
+                                     'exact arguments: {}'.format(
+                                         expected_args))
 
             self._registered_getters.append(method)
 

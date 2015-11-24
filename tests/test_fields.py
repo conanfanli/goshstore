@@ -26,10 +26,15 @@ class GosHstoreFieldTestCase(TestCase):
         '''If hstore field (in this case named "hstores") is empty, calling
         gos_batman should call calculate().
         '''
-        mock.return_value = 100 * 100
+        mock.return_value = 1
         instance = DummyModel()
         self.assertFalse(instance.hstores)
-        self.assertEqual(instance.gos_batman(save=False),
-                         Decimal(instance.calculate()))
-        self.assertEqual(instance.hstores,
-                         {'batman': str(instance.calculate())})
+        self.assertEqual(instance.gos_batman(save=False), 1)
+        # gos_batman() should call calculate()
+        mock.assert_called_once_with()
+        mock.reset_mock()
+        mock.assert_not_called()
+        self.assertEqual(instance.hstores, {'batman': '1'})
+        # Calling gos_batman() again should NOT call calculate()
+        instance.gos_batman()
+        mock.assert_not_called()

@@ -1,12 +1,12 @@
 from django.test import TestCase
 from django.db import models
 
-from goshstore.fields import GosHstoreField
+from goshstore.fields import GosHStoreField
 
 
 class DummyModel(models.Model):
-    hstores = GosHstoreField(default={})
-    second_gos = GosHstoreField(default={})
+    hstores = GosHStoreField(default={})
+    second_gos = GosHStoreField(default={})
 
 
 class GosHstoreFieldTestCase(TestCase):

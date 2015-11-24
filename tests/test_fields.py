@@ -35,6 +35,22 @@ class DummyModel(models.Model):
 
 class GosHstoreFieldTestCase(TestCase):
 
+    def test_getter_args(self):
+        hstores = GosHStoreField(default={})
+        with self.assertRaises(AssertionError) as cm:
+            hstores.getter(key='spiderman')(int)
+
+        self.assertEqual("int must have the exact arguments: ['self', 'save',"
+                         " 'reset']", str(cm.exception))
+
+    def test_converter_not_callable(self):
+        '''Cannot assign a non callable value as converter.'''
+        hstores = GosHStoreField(default={})
+        with self.assertRaises(AssertionError) as cm:
+            hstores.getter(key='spiderman', converter=1)(int)
+
+        self.assertEqual('1 is not callable', str(cm.exception))
+
     @patch.object(DummyModel, 'batman')
     def test_call_batman_only_once(self, mock):
         '''If hstore field (in this case named "hstores") is empty, calling

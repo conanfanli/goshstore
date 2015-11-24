@@ -57,9 +57,9 @@ class GosHStoreField(HStoreField):
             method_args = inspect.getargspec(method).args
             expected_args = ['self', 'save', 'reset']
             if method_args != expected_args:
-                raise AssertionError('A hstore getter method must have the '
-                                     'exact arguments: {}'.format(
-                                         expected_args))
+                raise AssertionError(
+                    '{} must have the exact arguments: {}'.format(
+                        method.__qualname__, expected_args))
 
             self._registered_getters.append(method.__name__)
 

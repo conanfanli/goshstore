@@ -7,14 +7,19 @@ from django.contrib.postgres.fields import HStoreField
 def reset_all_goshstore(self):
     '''Refresh all hstore values.'''
     for field_name in self._hstore_getters:
-        for getter in self._hstore_getters[field_name]:
-            getter(self, save=False, reset=True)
+        for getter_name in self._hstore_getters[field_name]:
+            method = getattr(self, getter_name)
+            method(save=False, reset=True)
 
     self.save(update_fields=list(self._hstore_getters.keys()))
 
 
 class GosHStoreField(HStoreField):
-    _registered_getters = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Simply set _registered_getters
+        self._registered_getters = []
 
     def contribute_to_class(self, cls, name, virtual_only=False):
         '''Override contribute_to_class to set _registered_getters on the
@@ -56,16 +61,20 @@ class GosHStoreField(HStoreField):
                                      'exact arguments: {}'.format(
                                          expected_args))
 
-            self._registered_getters.append(method)
+            self._registered_getters.append(method.__name__)
 
             @wraps(method)
             def wrapper2(model_instance, save=True, reset=False):
-                hstores_dict = self.value_from_object(model_instance)
+                # It's actually very important to make a COPY of the dict
+                # object instead of directly modifying it.
+                hstores_dict = dict(self.value_from_object(model_instance))
                 if key in hstores_dict and not reset:
                     ret = hstores_dict[key]
                 else:
                     ret = method(model_instance, save, reset)
                     hstores_dict[key] = str(ret)
+                    # Then remember set the field vaule
+                    setattr(model_instance, self.attname, hstores_dict)
                     if save:
                         model_instance.save(update_fields=[self.attname])
 

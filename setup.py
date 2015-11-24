@@ -19,7 +19,7 @@ setup(
     packages=find_packages(exclude=['doc', 'tests*']),
     install_requires=['django>=1.8,<1.8.9'],
     extras_require={
-        'dev': ['psycopg2==2.6.1']
+        'dev': ['psycopg2==2.6.1', 'coverage==4.0.2']
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

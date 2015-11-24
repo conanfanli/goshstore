@@ -22,7 +22,7 @@ class DummyModel(models.Model):
 class GosHstoreFieldTestCase(TestCase):
 
     @patch.object(DummyModel, 'calculate')
-    def test_goshstorefield_save_false(self, mock):
+    def test_goshstorefield_only_call_getter_once(self, mock):
         '''If hstore field (in this case named "hstores") is empty, calling
         gos_batman should call calculate().
         '''

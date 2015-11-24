@@ -6,6 +6,9 @@ from django.db import models
 
 from goshstore.fields import GosHStoreField
 
+sequence = iter(range(10000))
+database = {}
+
 
 class DummyModel(models.Model):
     hstores = GosHStoreField(default={})
@@ -18,6 +21,11 @@ class DummyModel(models.Model):
     def gos_batman(self, save=True, reset=False):
         return self.calculate()
 
+    def save(self, *args, **kwargs):
+        '''Make save do nothing.'''
+        self.id = next(sequence)
+        database[self.id] = self
+
 
 class GosHstoreFieldTestCase(TestCase):
 
@@ -29,7 +37,7 @@ class GosHstoreFieldTestCase(TestCase):
         mock.return_value = 1
         instance = DummyModel()
         self.assertFalse(instance.hstores)
-        self.assertEqual(instance.gos_batman(save=False), 1)
+        self.assertEqual(instance.gos_batman(), 1)
         # gos_batman() should call calculate()
         mock.assert_called_once_with()
         mock.reset_mock()
@@ -38,3 +46,11 @@ class GosHstoreFieldTestCase(TestCase):
         # Calling gos_batman() again should NOT call calculate()
         instance.gos_batman()
         mock.assert_not_called()
+
+    def test_reset_all_goshstore(self):
+        '''DummyModel.reset_all_goshstore should collect all hstore getters
+        and execute them regardless whether they are empty.
+        '''
+        instance = DummyModel()
+        instance.reset_all_goshstore()
+        self.assertEqual(instance.hstores, {'batman': '1'})

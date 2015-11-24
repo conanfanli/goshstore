@@ -4,7 +4,7 @@ from functools import wraps
 from django.contrib.postgres.fields import HStoreField
 
 
-def refresh_hstore(self):
+def reset_all_goshstore(self):
     '''Refresh all hstore values.'''
     for field_name in self._hstore_getters:
         for getter in self._hstore_getters[field_name]:
@@ -24,7 +24,7 @@ class GosHStoreField(HStoreField):
         hstore_getters = getattr(cls, '_hstore_getters', {})
         hstore_getters[name] = self._registered_getters
         setattr(cls, '_hstore_getters', hstore_getters)
-        cls.refresh_hstore = refresh_hstore
+        cls.reset_all_goshstore = reset_all_goshstore
 
     def getter(self, key, converter=None):
         '''A decorator used to declare a model method as a hstore property.

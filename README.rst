@@ -1,5 +1,9 @@
 django-goshstorefield
 =====================
+.. image:: https://travis-ci.org/conanfanli/goshstore.svg?branch=master
+    :alt: Build Status
+    :target: https://travis-ci.org/conanfanli/goshstore
+    
 django-goshstore field is a reusable Django field that allows you to get or set values from hstore fields.
 
 

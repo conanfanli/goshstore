@@ -12,7 +12,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='goshstore',
-    version='0.2.0',
+    version='0.3.0',
     description='Django get-or-set hstore field',
     long_description=long_description,
     url='https://github.com/conanfanli/goshstore',

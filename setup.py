@@ -17,7 +17,7 @@ setup(
     long_description=long_description,
     url='https://github.com/conanfanli/goshstore',
     packages=find_packages(exclude=['doc', 'tests*']),
-    install_requires=['django>=1.8,<1.8.9'],
+    install_requires=['django<=1.9.1, >=1.9.0'],
     extras_require={
         'dev': ['psycopg2==2.6.1', 'coverage==4.0.2']
     },
